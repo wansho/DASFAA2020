@@ -57,10 +57,11 @@ Microblogging sentiment analysis aims at exploring people's opinion on social ne
 Weibo, the most popular microblogging social network in China, has 465 million Monthly Active Users in March 2019. People can express their opinion about breaking news, current affairs, politics and other topics. Massive traffic even led to multiple downtimes on Weibo server. These subjective data are rich in sentiment information, which brings great convenience to the research of sentiment analysis.
 
 % 介绍情感分析与语料库的中外现状与不足之处
-Sentiment Analysis (or Opinion Mining) aims at using information technologies understand the opinion of others. Sentiment analysis on Twitter has made significant progress in sentiment corpus. Most of the methods for constructing sentiment corpus\cite{iosifidis2017large} use the Distant Supervised Learning method\cite{go2009twitter}, which labels the sentiment of Twitter with emotion words such as ``:-) '' and ``:( ''. However, emotion words cannot fully represent the sentiment polarity in tweet, and corpus mentioned above are actually corpus with noise, their methods are actually inaccurate supervision \cite{zhou2017brief}. In the field of the Chinese Weibo sentiment analysis, Chinese Opinion Analysis Evaluation (COAE2014) \cite{Yang2015Task} provide a collection of 40,000 weibos (equals tweet of Twitter) for research. Compared with Twitter sentiment analysis, Weibo sentiment analysis is a relatively young field, there is no large-scale and complete corpus.
+Sentiment Analysis (or Opinion Mining) aims at using information technologies understand the opinion of others. Sentiment analysis on Twitter has made significant progress in sentiment corpus. Most of the methods for constructing sentiment corpus\cite{iosifidis2017large} use the Distant Supervised Learning method\cite{go2009twitter}, which labels the sentiment of Twitter with emotion words such as ``:-) '' and ``:( ''. However, emotion words cannot fully represent the sentiment polarity in tweet, and corpus mentioned above are actually corpus with noise. In the field of the Chinese Weibo sentiment analysis, Chinese Opinion Analysis Evaluation (COAE2014) \cite{Yang2015Task} provide a collection of 40,000 weibos (equals tweet of Twitter) for research. Compared with Twitter sentiment analysis, the field of Weibo sentiment analysis lacks a large-scale and complete corpus.
 
 % 介绍文本预处理
-Pre-processing for Twitter data usually used for denosing and dimensionality reduction. The experiment results of \cite{haddi2013role} show that appropriate text pre-processing methods can significantly enhance the classifier's performance. \cite{bao2014role} discusses the role of pre-processing in Twitter sentiment analysis and show the results that precision rises when some methods are applied. Chinese Weibo text pre-processing is more complex than English text for the reason that Chinese do not use spaces to mark potential word-boundaries. We are also short of a unified rule for Weibo text cleaning. For example, supposing that we have applied a couple of word segmentation tool and cleaning rule to preprocess Weibo dataset and train a corresponding classifier. Then if we want to make full use of this classifier in online environment, the segmentation tool and cleaning rules should be consistent with training environment. Otherwise, a large number of unknown words will be generated.
+Pre-processing for Twitter data usually used for denosing and dimensionality reduction. The experiment results of \cite{haddi2013role} show that appropriate text pre-processing methods can significantly enhance the classifier's performance. \cite{bao2014role} discusses the role of pre-processing in Twitter sentiment analysis and show the results that precision rises when some methods are applied. A
+Chinese Weibo text pre-processing is more complex than English text for the reason that Chinese do not use spaces to mark potential word-boundaries. We are also short of a unified rule for Weibo text cleaning. For example, supposing that we have applied a couple of word segmentation tool and cleaning rule to preprocess Weibo dataset and train a corresponding classifier. Then if we want to make full use of this classifier in online environment, the segmentation tool and cleaning rules should be consistent with training environment. Otherwise, a large number of unknown words will be generated.
 
 % 介绍 system
 Sentiment analysis plays an import role in many systems. In review-related system, sentiment analysis can be used to analyze the polarity of reviews. \cite{song2019distilling} focuses on document-level sentiment classification to evaluate the overall sentiment score of products. A characteristics of microblogging sentiment analysis is the data visualization. Compass \cite{paul2017compass} provides an interactive web visualization system to visualize the event of US Presidential Election 2016 in spatio-temporal domain. To the best of our knowledge, no open-sourced sentiment analysis application provides real-time analysis for the weibo topic.
@@ -191,10 +192,10 @@ We design a demonstration platform called Senti-weibo to present our works menti
 \centering  %图片全局居中
 \subfigure[Senti-weibo's topic trend]{
 \label{fig:Senti-weibo's topic trend}
-\includegraphics[width=6.5cm, height=3.0cm]{images/huawei-echarts-trend.png}}
+\includegraphics[width=5.7cm, height=3.0cm]{images/huawei-echarts-trend.png}}
 \subfigure[Weibo-Index's topic trend]{
 \label{fig:Weibo-Index's topic trend}
-\includegraphics[width=6.5cm, height=3.0cm]{images/weibo-index-trend.png}}
+\includegraphics[width=5.7cm, height=3.0cm]{images/weibo-index-trend.png}}
 \caption{Comparison of two platforms}
 \label{fig:topic-trend-of-huawei}
 \end{figure*}
@@ -203,10 +204,10 @@ We design a demonstration platform called Senti-weibo to present our works menti
 \centering  %图片全局居中
 \subfigure[Huawei]{
 \label{fig:huawei-1day}
-\includegraphics[width=6.7cm, height=3.0cm]{images/huawei-alert.png}}
+\includegraphics[width=5.7cm, height=3.0cm]{images/huawei-alert.png}}
 \subfigure[China-US trade]{
 \label{fig:trade-5min}
-\includegraphics[width=6.7cm, height=3.0cm]{images/china-us-detate-5min.png}}
+\includegraphics[width=5.7cm, height=3.0cm]{images/china-us-detate-5min.png}}
 \caption{Temporal sentiment analysis}
 \label{fig:sentiment-trend}
 \end{figure*}
