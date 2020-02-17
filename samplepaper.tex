@@ -4,6 +4,7 @@
 %
 \documentclass[runningheads]{llncs}
 %
+\usepackage{bbding} % 用于加通讯作者的小信封
 \usepackage{graphicx}
 \usepackage{amsmath,amssymb,amsfonts}
 \usepackage{algorithm}
@@ -29,27 +30,31 @@
 \begin{document}
 %
 \title{S\textsuperscript{2}AP: Sequential Senti-weibo Analysis Platform}
+
+\author{Shuo Wan \and
+Bohan Li \inst{ (}\Envelope\inst{)} \and
+Anman Zhang  \and
+Wenhuan Wang  \and
+Donghai Guan 
+}
 %
-%\titlerunning{Abbreviated paper title}
-% If the paper title is too long for the running head, you can set
-% an abbreviated paper title here
-% double-blind
-% \author{xxx\inst{1}}
-% %
-% % \authorrunning{F. Author et al.}
-% % First names are abbreviated in the running head.
-% % If there are more than two authors, 'et al.' is used.
-% %
-% \institute{
-% xxx
-% \email{lncs@springer.com}\\
-% \url{http://www.springer.com/gp/computer-science/lncs}
-% }
+\authorrunning{S. Wan et al.}
+% First names are abbreviated in the running head.
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{
+Nanjing University of Aeronautics and Astronautics, Nanjing, China \\
+\email{\{bhli, shuowan\}@nuaa.edu.cn}
+}
+
+% \vspace{-0.5cm}   %调整图片与上文的垂直距离
+
+
 %
 \maketitle              % typeset the header of the contribution
 %
 \begin{abstract}
-Microblogging sentiment analysis aims at exploring people's opinion on social networks such as Twitter and Weibo. Existing work mainly focus on the English corpus based on Distant Supervision, which ignores the noise data in corpus and internationalization. The field of Weibo sentiment analysis lacks a large-scale and complete corpus for application and evaluation. In this work, we formulate the problem of corpus construction into an Information Retrieval problem and construct a Weibo sentiment analysis corpus called Senti-weibo. We also release a weibo pre-processing toolkit in order to unify the pre-processing rules of Weibo text. Eventually, we apply these works to implement a Weibo sentiment analysis platform: S\textsuperscript{2}AP, which serves to analyze and track the sequential sentiment of Weibo topics.
+Microblogging sentiment analysis aims at exploring people's opinion on social networks such as Twitter and Weibo. Existing work mainly focus on the English corpus based on Distant Supervision, which ignores the noise data in corpus and internationalization. The field of Weibo sentiment analysis lacks a large-scale and complete corpus for application and evaluation. In this work, we formulate the problem of corpus construction into an Information Retrieval problem and construct a Weibo sentiment analysis corpus called Senti-weibo. We also release a weibo pre-processing toolkit in order to unify the pre-processing rules of Weibo text. Eventually, we apply these works to implement a real-time Weibo sentiment analysis platform: S\textsuperscript{2}AP, which serves to analyze and track the sequential sentiment of Weibo topics.
 
 \keywords{Corpus construction \and Weibo sentiment analysis \and Text pre-processing.}
 
@@ -57,7 +62,7 @@ Microblogging sentiment analysis aims at exploring people's opinion on social ne
 
 \section{Introduction}
 % 介绍微博情感分析的意义
-Weibo, the most popular microblogging social network in China, has 497 million monthly active users in September 2019. People can express their opinion about breaking news, current affairs, politics and other topics. These subjective data are rich in sentiment information, which brings great convenience to the research of sentiment analysis.
+Weibo, the most popular microblogging social network in China, has 497 million monthly active users in September 2019. People can express their opinion about breaking news, current affairs, politics and other topics. These subjective data are rich in sentiment information~\cite{zhang2019cyberbullying}, which brings great convenience to the research of sentiment analysis.
 
 % 介绍情感分析与语料库的中外现状与不足之处
 Sentiment analysis on Twitter has made significant progress in sentiment corpus. Most of the methods for constructing sentiment corpus use Distant Supervision~\cite{go2009twitter}, which labels the sentiment of Twitter with emotion symbols such as ``:-) '' and ``:( ''. However, emotion symbols cannot fully represent the sentiment polarity of tweet, and corpus mentioned above are actually corpus with noise. Compared with Twitter sentiment analysis, the field of Weibo sentiment analysis lacks a large-scale and complete corpus.
@@ -73,7 +78,7 @@ Our works are summarized below:
 
 \item We unify weibo pre-processing rules and package it into a toolkit in Python: weibo-preprocess-toolkit\footnote{https://pypi.org/project/weibo-preprocess-toolkit}, which is applied for weibo cleaning. 
 
-\item A Weibo sentiment analysis platform called S\textsuperscript{2}AP\footnote{http://sentiweibo.top} is constructed to analyze the sentiment of Weibo topics. A Weibo Topic Spider is designed to crawl real-time weibos for analysis and fresh sentiment weibos for corpus iteration. In particular, we take the topic of ``China-US Trade'' and ``Huawei'' as concrete examples and track the sentiment trend of them.
+\item A Weibo sentiment analysis platform called S\textsuperscript{2}AP\footnote{http://sentiweibo.top} is constructed to analyze the real-time sentiment of Weibo topics. A Weibo Topic Spider is designed to crawl real-time weibos for analysis and fresh sentiment weibos for corpus iteration. In particular, we take two topics as concrete examples and track the sentiment trend of them.
 \end{enumerate}
 
 
@@ -95,13 +100,13 @@ Given a database $D$(public dataset or Weibo server), the retrieved weibos as $R
 } % end of 字体大小
 \end{myDef}
 
-In order to quickly initialize the corpus, we firstly query sentiment weibos from public dataset with 40 typical emojis. The sentiment classifier trained on the initialized corpus with fastText~\cite{joulin2016bag} algorithm has the initial precision of 87.04\% on test dataset. The test dataset comes from COAE2014~\cite{Yang2015Task} and we manually labeled 1,790 weibos.
+In order to quickly initialize corpus, we firstly query sentiment weibos from public dataset with 40 typical emojis. The sentiment classifier trained on the initialized corpus with fastText~\cite{joulin2016bag} has the initial precision of 87.04\%. The test dataset comes from COAE2014~\cite{Yang2015Task} and we manually labeled 1,790 weibos.
 
-Like most corpus~\cite{go2009twitter,pak2010twitter,iosifidis2017large} built with Distant Supervision, the initialized corpus also contains noise and slowly decays over time. From the perspective of IR, low $Precision$ is responsible for noise in the recalled weibos, while the decay of corpus corresponds to low $Recall$. In order to construct corpus and train model with high performance, we need to optimize the $Precision$ for high precision of sentiment classification model and improve the $Recall$ for generalized performance.
+Like most corpus~\cite{go2009twitter,iosifidis2017large} built with Distant Supervision, the initialized corpus also contains noise and slowly decays over time. From the perspective of IR, low $Precision$ is responsible for noise in the recalled weibos, while the decay of corpus corresponds to low $Recall$. In order to construct corpus and train model with high performance, we need to optimize the $Precision$ for high precision of sentiment classification model and improve the $Recall$ for generalized performance.
 
 % 和大多数采用 DSL 方法构建的语料库一样，初始化的微博语料库包含有大量的噪声样本，而且语料库会慢慢腐烂，失去泛化性能。从信息检索的角度思考，对于我们召回的情感微博，大量的噪声样本对应了低精确率，而语料库的腐烂对应了低召回率。 
 
-Weibo Topic Spider is applied to retrieve sentiment weibos. The reason why we choose to design Weibo Spider personally is that the API of Weibo has restrictions on querying weibos. We use spider with one emoji and its two synonyms sentiment words generated by word2vec as query to retrieve sentiment weibos from Weibo server. The combination of multiple features can improve the sentiment $Precision$ of retrieved weibos, and the similarity between the features can ensure $Precision$. Spider continuously collects fresh sentiment weibos with higher sentiment consistency and accumulates them for corpus iteration. In the process of iteration, we divide the corpus into training set and verification set, and sample subset of training dataset to train the classifier. Multiple supervised learning algorithms are applied to train sentiment classifiers to verify the sentiment label of verification dataset, and then sift out the weibos whose classification results do not match the original label. After several rounds of iteration, the precision of classifier trained by fastText has increased by 3.07\%. Finally, we build a Weibo sentiment analysis Corpus: Senti-weibo. 
+Weibo Topic Spider is applied to retrieve sentiment weibos. We use spider with one emoji and its two synonyms words generated by word2vec as query to retrieve sentiment weibos from Weibo server. The combination of multiple features can improve the sentiment $Precision$ of retrieved weibos, and the similarity between the features can ensure $Recall$. Spider continuously collects fresh sentiment weibos with higher sentiment consistency and accumulates them for corpus iteration. In the process of iteration, we divide the corpus into training set and verification set, and sample subset of training dataset to train the classifier. Multiple supervised learning algorithms are applied to train sentiment classifiers to verify the sentiment label of verification dataset, and then sift out the weibos whose classification results do not match the original label. After several rounds of iteration, the precision of classifier trained by fastText has increased by 3.07\%. Finally, we build a Weibo sentiment analysis Corpus: Senti-weibo. 
 
 \begin{figure}[ht]
 \vspace{-0.5cm}   %调整图片与上文的垂直距离
@@ -117,9 +122,7 @@ Weibo Topic Spider is applied to retrieve sentiment weibos. The reason why we ch
 \section{Platform Implementation and Demonstration}
 We design a demonstration platform called S\textsuperscript{2}AP to present our works mentioned in each section. Fig.~\ref{fig:Senti-weibo} depicts the architecture of S\textsuperscript{2}AP, which has two main function models: \textit{offline scripts} and \textit{front-end visualization}.
 
-\textit{Offline scripts} model encapsulates scripts such as spider, corpus iteration, and text pre-processing. Fig.~\ref{fig:segmentation-tools-precision} shows the performance of the model caused by different pre-processing rules. We take six Chinese segmentation tools to cut test dataset, and apply the pre-trained model segmented by jieba\footnote{\url{https://github.com/fxsjy/jieba}} to classify each test dataset. Jieba is not the best Chinese segmentation tool, but the consistent rules in the training and test environment maximize the performance of model.
-
-\begin{figure}[htbp]
+\begin{figure}[ht]
 \vspace{-0.5cm}   %调整图片与上文的垂直距离
 \centering
 \begin{minipage}[t]{0.43\textwidth}
@@ -136,7 +139,11 @@ We design a demonstration platform called S\textsuperscript{2}AP to present our 
 \end{minipage}
 \end{figure}
 
-\textit{Front-end visualization} provides interface to interact with back-end. Fig.~\ref{fig:sentiment-trend} shows the temporal sentiment analysis of two specified topics. Fig.~\ref{fig:huawei-1day} represents the daily sentiment trend of Huawei from March to July. The negative sentiment of Huawei since May 16 accurately reflects the event that Huawei is added to the Entity List. Fig.~\ref{fig:trade-5min} reflects the sentiment trend of China-US trade from May 29 to May 30 in a five-minutes frequency, which corresponds to the intense emotional changes of netizen to the anchors' debate between China and US. We also open-source weibos for two topics collected from April to July. More sentiment analysis of topic can be available by visiting S\textsuperscript{2}AP. 
+\textit{Offline scripts} model encapsulates scripts such as spider, corpus iteration, and text pre-processing. Fig.~\ref{fig:segmentation-tools-precision} shows the performance of the model caused by different pre-processing rules. We take six Chinese segmentation tools to cut test dataset, and apply the pre-trained model segmented by jieba\footnote{\url{https://github.com/fxsjy/jieba}} to classify each test dataset. Jieba is not the best Chinese segmentation tool, but the consistent rules in the training and test environment maximize the performance of model.
+
+
+
+\textit{Front-end visualization} provides interface to interact with back-end. Fig.~\ref{fig:huawei-1day} represents the daily sentiment trend of Huawei from March to July. The negative sentiment of Huawei since May 16 accurately reflects the event that Huawei is added to the Entity List. Fig.~\ref{fig:trade-5min} reflects the sentiment trend of China-US trade from May 29 to May 30 in a five-minutes frequency, which corresponds to the intense emotional changes of netizen to the anchors' debate between China and US. Another feature of  platform is the real-time analysis to reflect the latest sentiment trend, which can be available by visiting S\textsuperscript{2}AP.
 
 \begin{figure}[ht]
 \vspace{-0.5cm}  % 调整图片与上文的垂直距离
