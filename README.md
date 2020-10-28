@@ -1,4 +1,4 @@
-# DASFAA2020 投稿论文 Tex 源码
+# S2AP
 
 Wan, Shuo, Bohan Li, Anman Zhang, [S2AP: Sequential Senti-Weibo Analysis Platform](https://link.springer.com/chapter/10.1007/978-3-030-59419-0_49)
 
